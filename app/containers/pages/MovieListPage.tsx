@@ -4,7 +4,23 @@ import { View, Text, Button, ScrollView, ActivityIndicator } from 'react-native'
 
 import ActionsCreators from '../../actions/index';
 
-class MovieListPage extends React.Component{
+interface IMovie {
+	title: string;
+	releaseYear: number;
+}
+interface Actions {
+	searchMovies(): void;
+}
+interface Data {
+	movies: IMovie[];
+	isLoading: boolean;
+}
+interface Props {
+	actions: Actions;
+	data: Data;
+}
+
+class MovieListPage extends React.Component<Props> {
 	static navigationOptions = {
 		title: 'Movies'
 	};
@@ -20,7 +36,11 @@ class MovieListPage extends React.Component{
 	render() {
 
 		let movieList = this.props.data.movies
-			.map((movie) => <View key={movie.title} style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: 'lightgray' }}><Text>{movie.title} ({movie.releaseYear})</Text></View>)
+			.map((movie) =>
+			<View key={movie.title}
+				style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: 'lightgray' }}>
+				<Text>{movie.title} ({movie.releaseYear})</Text>
+			</View>);
 
 		let view;
 		if (this.props.data.isLoading) {
@@ -34,30 +54,35 @@ class MovieListPage extends React.Component{
 					<ScrollView>
 						{movieList}
 					</ScrollView>
-				)
+				);
 		}
 
 		return(
 			<View>
 				<View>
-					<Button onPress={ () => this.searchMovies() } title="refresh" disabled={ this.props.data.isLoading }/>
+					<Button onPress={ () => this.searchMovies() } title='refresh' disabled={ this.props.data.isLoading }/>
 				</View>
 				{ view }
 			</View>
-		)
+);
 	}
 }
 
 function mapDispatchToProps(dispatch) {
-	return { 
+	return {
 		actions: {
-			searchMovies: () => dispatch(ActionsCreators.searchMovies()) 
-		}
-	}
+			searchMovies: () => dispatch(ActionsCreators.searchMovies())
+		} as Actions
+	};
 }
 
 function mapStateToProps(state) {
-	return { data: { movies: state.searchedMovies.movies, isLoading: state.searchedMovies.isLoading } }
+	return { data:
+		{
+			movies: state.searchedMovies.movies,
+			isLoading: state.searchedMovies.isLoading
+		} as Data
+	};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieListPage);

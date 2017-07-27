@@ -2,18 +2,18 @@ import * as types from './types';
 import _ from 'lodash';
 
 export function addMovie() {
-	return { type: types.ADD_MOVIE }
+	return { type: types.ADD_MOVIE };
 }
 
-function setSearchedMovies(movies){
+function setSearchedMovies(movies) {
 	return {
 		type: types.SET_SEARCHED_MOVIES,
 		searchedMovies: movies
-	}
+	};
 }
 
-function isLoading(){
-	return { type: types.IS_LOADING }
+function isLoading() {
+	return { type: types.IS_LOADING };
 }
 
 export function searchMovies() {
@@ -25,6 +25,6 @@ export function searchMovies() {
 				if (_.isArray(responseJson.movies)) {
 					dispatch(setSearchedMovies(responseJson.movies));
 				}
-			})
-	}
+			});
+		};
 }
