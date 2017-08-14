@@ -1,30 +1,41 @@
 import * as types from './types';
-import _ from 'lodash';
+// import _ from 'lodash';
+import { Observable } from 'rxjs/observable';
+import 'rxjs/add/observable/dom/ajax';
+import 'rxjs/add/operator/map';
 
 export function addMovie() {
 	return { type: types.ADD_MOVIE };
 }
 
-function setSearchedMovies(movies) {
+function searchedMoviesSuccess(movies) {
 	return {
-		type: types.SET_SEARCHED_MOVIES,
+		type: types.SEARCHED_MOVIES_SUCCESS,
 		searchedMovies: movies
 	};
 }
 
 function isLoading() {
-	return { type: types.IS_LOADING };
+	return { type: types.SEARCHED_MOVIES_REQUEST };
 }
 
 export function searchMovies() {
 	return (dispatch) => {
 		dispatch(isLoading());
-		fetch('https://facebook.github.io/react-native/movies.json')
-			.then((response) => response.json())
-			.then((responseJson) => {
-				if (_.isArray(responseJson.movies)) {
-					dispatch(setSearchedMovies(responseJson.movies));
-				}
-			});
-		};
+	};
 }
+
+interface IMovie {
+	name: string;
+	releaseYear: string;
+}
+interface IMovieResponse {
+	movies: IMovie[];
+}
+
+export const fetchMoviesEpic = action$ =>
+	action$.ofType(types.SEARCHED_MOVIES_REQUEST)
+		.mergeMap(() =>
+			Observable.ajax.getJSON<IMovieResponse>(`https://facebook.github.io/react-native/movies.json`)
+				.map(response => searchedMoviesSuccess(response.movies))
+);

@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"start": "node node_modules/react-native/local-cli/cli.js start",
+		"start": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
 		"test": "jest --coverage",
 		"tsc": "tsc",
 		"clean": "rimraf artifacts",
@@ -21,7 +21,9 @@
 		"react-redux": "^5.0.5",
 		"redux": "^3.7.2",
 		"redux-logger": "^3.0.6",
-		"redux-thunk": "^2.2.0"
+		"redux-observable": "^0.14.1",
+		"redux-thunk": "^2.2.0",
+		"rxjs": "^5.4.2"
 	},
 	"devDependencies": {
 		"@types/jest": "^20.0.5",

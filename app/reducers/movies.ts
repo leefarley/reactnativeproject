@@ -3,10 +3,10 @@ import * as types from '../actions/types';
 
 export const searchedMovies = createReducer({ movies: [], isLoading: false },
 	{
-		[types.SET_SEARCHED_MOVIES](state, action) {
+		[types.SEARCHED_MOVIES_SUCCESS](state, action) {
 			return {...state, movies: action.searchedMovies, isLoading: false };
 		},
-		[types.IS_LOADING](state) {
+		[types.SEARCHED_MOVIES_REQUEST](state) {
 				return { ...state, isLoading: true };
 		}
 	});

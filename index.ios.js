@@ -1,1 +1,1 @@
-import './artifcats/index';
+import "./artifacts/index";

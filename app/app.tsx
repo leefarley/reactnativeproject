@@ -4,16 +4,22 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import { AppRegistry } from 'react-native';
+import { combineEpics, createEpicMiddleware } from 'redux-observable';
 
 import reducer from './reducers';
+import { fetchMoviesEpic } from './actions/movies';
 import AppContainer from './containers/appContainer';
 
+const epicRoot = combineEpics(fetchMoviesEpic);
+
+const epicMiddleWare = createEpicMiddleware(epicRoot);
 const loggerMiddleware = createLogger({ predicate: () => __DEV__ });
 
 function configureStore(initalState) {
 	// compose a enhancer with all of the middleware required.
 	const enhancer = compose(
 		applyMiddleware(
+			epicMiddleWare,
 			thunkMiddleware,
 			loggerMiddleware
 		));
